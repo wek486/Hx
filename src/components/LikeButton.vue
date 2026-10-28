@@ -20,7 +20,7 @@ async function click() {
   catch (error) { ElMessage.error(error.response?.data?.msg || error.message || '点赞失败，请重试') }
 }
 </script>
-
+<!-- 实现喜欢和不喜欢功能，先判断作品是不是已经喜欢的，然后渲染，这里用响应式和computed，列表只要变了，就会自动更新，此图片是否是喜欢的，然后用变量bool和if实现不同的请求 -->
 <template>
   <button type="button" class="like-button" :class="{ active, compact }" :disabled="!imageKey(image)" :aria-pressed="active" :aria-label="`${active ? '取消点赞' : '点赞'}：${image.title || '作品'}，${count} 次点赞`" @click.stop="click">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" /></svg>

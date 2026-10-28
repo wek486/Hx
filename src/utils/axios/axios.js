@@ -1,9 +1,7 @@
 import axios from 'axios';
-import { resolveApiMedia } from './media.js'
-const apiBase = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '')
 //记得不是自己定义的内容一般都要安装对应的包，npm install axios
 const request = axios.create({
-    baseURL:apiBase,
+    baseURL:"/api",
     timeout: 50000
 })
 // 登录后，后续 API 请求自动携带 JWT。
@@ -22,7 +20,7 @@ request.interceptors.request.use((config) => {
 //         如果 config.headers 已经存在，就保留原来的请求头；否则创建一个空对象。
 // 在现代 Axios 中，正常请求配置通常已经有 headers，所以这句更多是防御性写法。
         config.headers = config.headers || {}
-        config.headers.Authorization = 'Bearer ' + token
+        config.headers.Authorization = 'Bearer' + token
         //Authorization HTTP 标准认证请求头
         //Bearer 认证方案
     }
@@ -43,7 +41,6 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
     (response)=>{
         if(response.data.code==1) {
-            resolveApiMedia(response.data, apiBase)
             return response.data
          }
         else{
@@ -52,10 +49,6 @@ request.interceptors.response.use(
     },
     (err)=>
     {
-        if (err.response?.status === 401 && err.config?.url !== '/login') {
-            window.dispatchEvent(new Event('hx:session-expired'))
-        }
-        if (err.response?.data?.msg) err.message = err.response.data.msg
         return Promise.reject(err)
     }
 )

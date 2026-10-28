@@ -34,8 +34,8 @@ const previewImage = ref(null)
 
 // previewImage：列表使用分页，点击“加载更多”获取下一页。
 const page = ref(0)
-const pageSize = 20
-const hasMore = ref(false)
+const pageSize = 100
+const hasMore = ref(true)
 
 // 防止旧请求覆盖切换分类后的新结果。
 let requestId = 0
@@ -45,14 +45,15 @@ async function loadImages(reset = true) {
   if (!reset && (loading.value || !hasMore.value)) return
 
   const currentRequestId = ++requestId
-  const nextPage = reset ? 1 : page.value + 1
+  const nextPage = reset ? 0:page.value+1
+  //这里的巧妙设计reset可以实现加载更多图片和控制只是刷新当前的图片列表，默认为true，后面给按钮绑定一个false就行
   loading.value = true
   errorMessage.value = ''
 //  reset：重新加载整份列表，清空 images、page、hasMore、failedImages、previewVisible。
   if (reset) {
     images.value = []
-    page.value = 0
-    hasMore.value = false
+    
+    hasMore.value = true
     failedImages.value = new Set()
     previewVisible.value = false
   }
@@ -63,8 +64,8 @@ async function loadImages(reset = true) {
     const result = await getImageList({
       category: currentCategory.value || undefined,
       sort: currentSort.value,
-      page: nextPage,
-      pageSize,
+      page: nextPage*60,
+      
     })//这里参数是对象,当参数多时,就升级为对象,方便后续扩展,例如增加搜索关键字等
     //后端记得定义实现类,才能实现参数不同的查找效果
     //awit产生时间差，如果当前请求不是最新的请求，忽略结果。   
@@ -126,13 +127,7 @@ requestId === 2,currentRequestId !== requestId
 // nextPage	本次准备请求的页码
 // page.value	已经成功加载的页码
     // 有 total 时按总数判断；没有时按本页数量判断。
-    const total = 104
-
-    hasMore.value =
-      typeof total === 'number'//判断类型
-        ? nextPage * pageSize < total
-        : records.length === pageSize
-        //   : records.length === pageSize
+   
   } catch (error) {
     // ④ catch 中的编号判断：旧请求的错误也要忽略
 
@@ -153,7 +148,7 @@ requestId === 2,currentRequestId !== requestId
 
 function retry() {
   // 首屏失败重新加载第一页，加载更多失败重试下一页。
-  loadImages(page.value === 0)
+  loadImages(images.value.length === 0)
 //   更具false和true的不同，重新加载整份列表，或者加载下一页。
 }
 

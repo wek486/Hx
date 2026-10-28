@@ -37,6 +37,20 @@ async function submit() {
   } catch (e) { ElMessage.error(e.response?.data?.msg || e.message || '提交失败，内容已保留') }
   finally { saving.value = false }
 }
+// // 监听一个 ref
+// watch(count, (newValue, oldValue) => {
+//   console.log(newValue, oldValue)
+// })
+
+// // 监听对象中的某个属性，要用 getter
+// watch(() => user.value.name, (name) => {
+//   console.log(name)
+// })
+
+// // 同时监听多个数据
+// watch([count, keyword], ([newCount, newKeyword]) => {
+//   console.log(newCount, newKeyword)
+// })
 async function remove(item) {
   const imageId = props.image?.id, uid = user.value?.id
   try { await ElMessageBox.confirm('确定删除这条评论吗？', '删除评论', { confirmButtonText: '删除', cancelButtonText: '保留', type: 'warning' }) } catch { return }
