@@ -1,6 +1,6 @@
 <script setup>
 import LikeButton from '@/components/LikeButton.vue'
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
 import ImagePreview from '@/components/ImagePreview.vue'
 import { getImageList } from '@/api/image_find.js'
 
@@ -118,7 +118,7 @@ requestId === 2,currentRequestId !== requestId
 
       images.value = [
         ...images.value,
-        ...list.filter((item) => !existingIds.has(item.id))
+        ...list.filter((item) => !existingIds.has(item.id)) // 追加新图片并去重
       ]
     }
 
@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
           v-for="sort in sorts"
           :key="sort.value"
           type="button"
-
+          
           :class="{ active: currentSort === sort.value }"
           :aria-pressed="currentSort === sort.value"
           @click="currentSort = sort.value"
