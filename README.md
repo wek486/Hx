@@ -2,64 +2,57 @@
 
 # Hx · 图片分享社区
 
-浏览喜欢的图片，发现作者，留下关注、点赞与评论。
+用 Vue 3 和 Spring Boot 搭建的图片社区。浏览二次元插画与 Cosplay 作品，发现作者，留下关注、点赞和评论。
 
-![Vue 3](https://img.shields.io/badge/Vue%203-42b883?style=flat-square) ![Vite](https://img.shields.io/badge/Vite-646cff?style=flat-square) ![Element Plus](https://img.shields.io/badge/Element%20Plus-409eff?style=flat-square)
+**[在线体验](https://wek486.github.io/Hx/#/find)** · **[配套后端](https://github.com/wek486/hx.h)** · **[本地启动](#本地启动)** · **[部署指南](./GITHUB-PAGES.md)**
+
+![Vue 3](https://img.shields.io/badge/Vue%203-42b883?style=flat-square) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square) ![MyBatis](https://img.shields.io/badge/MyBatis-BF3C32?style=flat-square) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square)
+
+<a href="https://wek486.github.io/Hx/#/find"><img src="https://github.com/user-attachments/assets/fb42a015-2456-4b1e-bf2d-35bb8717e881" alt="Hx 图片社区的发现页截图，点击打开在线体验" width="960"></a>
 
 </div>
 
----
+## 可以体验什么
 
-<p align="center"><a href="https://github.com/wek486/hx.h">配套后端</a> · <a href="./GITHUB-PAGES.md">部署指南</a> · <a href="./FOLLOW-NOTES.md">关注功能说明</a></p>
+- **浏览作品**。按分类和推荐、最新、热门排序浏览图片，支持搜索和大图预览。在线体验无需登录即可浏览。
+- **与作者和作品互动**。登录后可以关注作者、点赞图片、发表评论，并在个人页查看互动记录。
+- **管理账号与评论**。用户可以修改资料和头像，管理员可以审核待公开的评论。[关注、点赞与评论说明](./FOLLOW-NOTES.md)
 
-## 界面预览
-
-<p align="center"><img src="https://github.com/user-attachments/assets/fb42a015-2456-4b1e-bf2d-35bb8717e881" alt="Hx 图片分享网站现有项目截图" width="960"></p>
-
-## 主要功能
-
-| 模块 | 内容 |
-| --- | --- |
-| 图片发现 | 图片列表、搜索与图片预览 |
-| 社交互动 | 关注作者、点赞作品与评论 |
-| 个人空间 | 个人主页、最近互动、账号资料与头像 |
-| 账号流程 | 登录、注册、退出与密码修改 |
-| 评论管理 | 管理员审核入口，与后端权限配合 |
+如果 Hx 对你有参考价值，欢迎点个 Star，方便下次回来找。遇到问题或有功能建议，可以到 [Issues](https://github.com/wek486/Hx/issues) 留下页面、复现步骤或截图。
 
 ## 本地启动
 
-Node.js 要求：`^22.18.0 || >=24.12.0`，与 `package.json` 保持一致。
+| 部分 | 环境与说明 |
+| --- | --- |
+| 前端 · 本仓库 | Node.js `22.18.0` 及以上的 22.x 版本，或 `24.12.0` 及以上版本。使用 Vue 3、Vite 和 Element Plus |
+| 后端 · [hx.h](https://github.com/wek486/hx.h) | JDK 17、Maven、MySQL，使用 Spring Boot 和 MyBatis |
 
-```sh
-git clone https://github.com/wek486/Hx.git
-cd Hx
-npm install
-npm run dev
-```
+1. 按 [后端 README](https://github.com/wek486/hx.h#本地运行) 准备数据库和图片数据，再启动后端。前端开发代理默认将 `/api` 请求转发到 `http://localhost:8080`。
+2. 启动前端，并在浏览器打开终端显示的地址。
 
-本地开发通过 `/api` 代理到 `http://localhost:8080`，转发时移除 `/api` 前缀。请同时启动 [hx.h 后端](https://github.com/wek486/hx.h) 并配置数据库；仅启动前端无法完成图片加载、登录和互动。
+   ```sh
+   git clone https://github.com/wek486/Hx.git
+   cd Hx
+   npm install
+   npm run dev
+   ```
+
+图片列表、登录和社交互动依赖后端和数据库。本地想先看界面，可以打开上方在线体验。
+
+## 项目结构
+
+| 目录 | 负责内容 |
+| --- | --- |
+| `src/views/`、`src/layout/` | 发现、搜索、账号等页面与导航布局 |
+| `src/components/` | 图片预览、点赞和评论等组件 |
+| `src/api/`、`src/stores/` | 业务接口与关注、点赞状态 |
+| `src/utils/router/`、`src/utils/axios/` | 页面路由、接口请求与媒体地址 |
+
+## 构建与部署
 
 ```sh
 npm run build
 npm run preview
 ```
 
-以上为仓库脚本与配置对应的操作，本次文档整理未重新构建应用。
-
-## 项目结构
-
-| 位置 | 职责 |
-| --- | --- |
-| `src/views/` | 发现、搜索、账号与设置等页面 |
-| `src/components/` | 图片预览、评论、点赞等组件 |
-| `src/api/` | 账号、搜索与社交接口 |
-| `src/stores/` | 关注和点赞状态 |
-| `src/utils/router/` | 路由配置 |
-| `src/utils/axios/` | 请求与媒体地址处理 |
-| `src/layout/` | 导航和页面框架 |
-
-## 部署
-
-参考 [.env.example](./.env.example) 与 [GitHub Pages 部署指南](./GITHUB-PAGES.md)。Pages 只运行静态前端，需要另行提供可访问的 HTTPS 后端。公开的 `VITE_API_BASE_URL` 用于 API 地址配置。
-
-工作流适配 Pages 子路径并使用 hash 路由；本地开发使用 history 路由。前端地址与后端 CORS 配置需要一致。
+GitHub Pages 托管静态前端。部署时通过 `VITE_API_BASE_URL` 指向可公开访问的 HTTPS 后端，并让后端允许 Pages 来源跨域访问。Pages 使用 hash 路由，本地开发使用 history 路由。配置步骤见 [环境变量示例](./.env.example) 和 [部署指南](./GITHUB-PAGES.md)。
